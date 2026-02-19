@@ -1,24 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, createElement } from "react";
 
 const TrafficLight = () => {
 
     const [redlight, setRedLight] = useState(false)
-    console.log("esto es redlight",redlight)
     const [yellowlight, setYellowLight] = useState(false)
-    console.log("esto es yellowlight",yellowlight)
     const [greenlight, setGreenLight] = useState(false)
-    console.log("esto es greenlight",greenlight)
+    const [purplelight, setPurpleLight] = useState(false)
+    const [showNewLight, setShowNewLight] = useState(false)
 
     function toggleRedLight() {
         if (redlight === false) {
             setRedLight(true)
             setYellowLight(false)
             setGreenLight(false)
-
-            console.log("entra al if")
+            setPurpleLight(false)
         }
         else {
-            console.log("entra al else")
             setRedLight(false)
         }
     }
@@ -28,6 +25,7 @@ const TrafficLight = () => {
             setYellowLight(true)
             setRedLight(false)
             setGreenLight(false)
+            setPurpleLight(false)
         }
         else {
             setYellowLight(false)
@@ -39,33 +37,55 @@ const TrafficLight = () => {
             setGreenLight(true)
             setYellowLight(false)
             setRedLight(false)
+            setPurpleLight(false)
         }
         else {
             setGreenLight(false)
         }
     }
 
+    function togglePurpleLight() {
+        if (purplelight === false) {
+            setPurpleLight(true)
+            setGreenLight(false)
+            setYellowLight(false)
+            setRedLight(false)
+        }
+        else {
+            setPurpleLight(false)
+        }
+    }
+
     function alternate() {
         if (redlight === true) {
-            console.log("entra en el 1ro")
             setYellowLight(true)
             setRedLight(false)
             setGreenLight(false)
+            setPurpleLight(false)
         }
         if (yellowlight === true) {
             setGreenLight(true)
             setYellowLight(false)
             setRedLight(false)
+            setPurpleLight(false)
         }
         if (greenlight === true) {
+            setPurpleLight(true)
             setGreenLight(false)
             setYellowLight(false)
-            setRedLight(true)
+            setRedLight(false)
         }
-        if (redlight === false && yellowlight === false && greenlight === false) {
+        if (purplelight === true) {
+            setRedLight(true)
+            setPurpleLight(false)
+            setGreenLight(false)
+            setYellowLight(false)
+        }
+        if (redlight === false && yellowlight === false && greenlight === false && purplelight === false) {
             setRedLight(true)
         }
     }
+
 
 
     return (
@@ -74,21 +94,33 @@ const TrafficLight = () => {
             <div className="box bg-black rounded">
                 <div className="circle text-danger fs-1 position-relative">
                     <i onClick={() => toggleRedLight()} className="fa-solid fa-circle">
-                    <i className="fa-solid fa-circle position-absolute" style={{ color: "#dada4d", top: "10px", boxShadow: "1px 1px 11px 13px", borderRadius: "50%", display: `${redlight === true ? "block" : "none"}` }}></i>
+                        <i className="fa-solid fa-circle position-absolute" style={{ color: "#dada4d", top: "10px", boxShadow: "1px 1px 11px 13px", borderRadius: "50%", display: `${redlight === true ? "block" : "none"}` }}></i>
                     </i>
                 </div>
                 <div className="circle text-warning fs-1 position-relative">
                     <i onClick={() => toggleYellowLight()} className="fa-solid fa-circle">
-                    <i className="fa-solid fa-circle position-absolute" style={{ color: "#dada4d", top: "10px", boxShadow: "1px 1px 9px 9px", borderRadius: "50%", display: `${yellowlight === true ? "block" : "none"}` }}></i>
+                        <i className="fa-solid fa-circle position-absolute" style={{ color: "#dada4d", top: "10px", boxShadow: "1px 1px 9px 9px", borderRadius: "50%", display: `${yellowlight === true ? "block" : "none"}` }}></i>
                     </i>
                 </div>
                 <div className="circle text-success fs-1 position-relative">
                     <i onClick={() => toggleGreenLight()} className="fa-solid fa-circle">
-                    <i className="fa-solid fa-circle position-absolute" style={{ color: "#dada4d", top: "10px", boxShadow: "1px 1px 9px 9px", borderRadius: "50%", display: `${greenlight === true ? "block" : "none"}` }}></i>
+                        <i className="fa-solid fa-circle position-absolute" style={{ color: "#dada4d", top: "10px", boxShadow: "1px 1px 9px 9px", borderRadius: "50%", display: `${greenlight === true ? "block" : "none"}` }}></i>
                     </i>
                 </div>
+                {showNewLight ? (
+                    <div className="circle fs-1 position-relative" style={{ color: "purple" }}>
+                        <i onClick={() => togglePurpleLight()} className="fa-solid fa-circle">
+                            <i className="fa-solid fa-circle position-absolute" style={{ color: "#dada4d", top: "10px", boxShadow: "1px 1px 9px 9px", borderRadius: "50%", display: `${purplelight === true ? "block" : "none"}` }}></i>
+                        </i>
+                    </div>
+                ) : (
+                    <div style={{ display: "none" }}></div>
+                )}
             </div>
-            <button onClick={() => alternate()} className="btn btn-primary mx-auto">Alternate</button>
+            <div className="container mx-auto d-flex justify-content-center mt-5">
+                <button onClick={() => alternate()} className="btn btn-primary mx-auto">Alternate</button>
+                <button onClick={() => setShowNewLight(true)} className="btn btn-primary mx-auto">Add New Cicrlce</button>
+            </div>
         </div>
     );
 }
